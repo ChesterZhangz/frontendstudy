@@ -8,7 +8,9 @@ export const corsOptions = {
       'http://localhost:3000',
       'http://localhost:5173',
       'http://127.0.0.1:3000',
-      'http://127.0.0.1:5173'
+      'http://127.0.0.1:5173',
+      'https://study.mareate.com',
+      'http://study.mareate.com'
     ];
 
     // 开发环境允许所有源
