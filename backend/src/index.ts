@@ -73,12 +73,12 @@ app.use('/api/achievements', achievementsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
 // 静态文件服务 - 在API路由之后
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-app.use(express.static(path.join(__dirname, '../nginx-static')));
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../../nginx-static')));
 
 // SPA路由处理 - 所有未匹配的路由返回index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
 // 404 处理
