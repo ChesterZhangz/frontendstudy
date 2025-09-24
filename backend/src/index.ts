@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
+import mime from 'mime-types';
 import { connectDatabase, connectSharedataDatabase } from './config/database';
 import { corsMiddleware } from './middleware/cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -20,8 +21,19 @@ const PORT = process.env.PORT || 5200;
 // 信任代理设置
 app.set('trust proxy', true);
 
-// 安全中间件
-app.use(helmet());
+// 安全中间件 - 配置CSP以允许内联脚本
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+    },
+  },
+}));
 
 // CORS 中间件
 app.use(corsMiddleware);
@@ -72,9 +84,32 @@ app.use('/api/study', studyRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
-// 静态文件服务 - 在API路由之后
-app.use(express.static(path.join(__dirname, '../../frontend/dist')));
-app.use(express.static(path.join(__dirname, '../../nginx-static')));
+// 静态文件服务 - 在API路由之后，配置正确的MIME类型
+app.use(express.static(path.join(__dirname, '../../frontend/dist'), {
+  setHeaders: (res, path) => {
+    // 设置正确的MIME类型
+    const mimeType = mime.lookup(path);
+    if (mimeType) {
+      res.setHeader('Content-Type', mimeType);
+    }
+    
+    // 设置缓存头
+    if (path.includes('/assets/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    }
+  }
+}));
+
+app.use(express.static(path.join(__dirname, '../../nginx-static'), {
+  setHeaders: (res, path) => {
+    const mimeType = mime.lookup(path);
+    if (mimeType) {
+      res.setHeader('Content-Type', mimeType);
+    }
+  }
+}));
 
 // SPA路由处理 - 所有未匹配的路由返回index.html
 app.get('*', (req, res) => {
