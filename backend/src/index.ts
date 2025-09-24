@@ -56,11 +56,7 @@ const loginLimiter = rateLimit({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// 静态文件服务
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-app.use(express.static(path.join(__dirname, '../nginx-static')));
-
-// 健康检查端点
+// 健康检查端点 - 优先处理
 app.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -70,14 +66,18 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API 路由
+// API 路由 - 优先处理
 app.use('/api/auth', loginLimiter, authRoutes);
 app.use('/api/study', studyRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
-// 根路径 - 返回前端页面
-app.get('/', (req, res) => {
+// 静态文件服务 - 在API路由之后
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../nginx-static')));
+
+// SPA路由处理 - 所有未匹配的路由返回index.html
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
