@@ -7,7 +7,7 @@ WORKDIR /app/frontend
 COPY frontend/package*.json ./
 
 # 安装前端依赖
-RUN npm ci
+RUN npm install
 
 # 复制前端源代码
 COPY frontend/ ./
@@ -26,7 +26,7 @@ WORKDIR /app/backend
 COPY backend/package*.json ./
 
 # 安装后端依赖
-RUN npm ci
+RUN npm install
 
 # 复制后端源代码
 COPY backend/ ./
@@ -67,7 +67,6 @@ COPY --from=backend-builder --chown=nextjs:nodejs /app/backend/node_modules ./ba
 
 # 复制前端构建结果
 COPY --from=frontend-builder --chown=nextjs:nodejs /app/frontend/dist ./frontend/dist
-COPY --from=frontend-builder --chown=nextjs:nodejs /app/frontend/public ./static
 # 为nginx准备静态文件
 COPY --from=frontend-builder --chown=nextjs:nodejs /app/frontend/dist ./nginx-static
 

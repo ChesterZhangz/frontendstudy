@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import { connectDatabase, connectSharedataDatabase } from './config/database';
 import { corsMiddleware } from './middleware/cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -15,6 +16,9 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5200;
+
+// 信任代理设置
+app.set('trust proxy', true);
 
 // 安全中间件
 app.use(helmet());
@@ -52,6 +56,10 @@ const loginLimiter = rateLimit({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// 静态文件服务
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../nginx-static')));
+
 // 健康检查端点
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -68,18 +76,9 @@ app.use('/api/study', studyRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
-// 根路径
+// 根路径 - 返回前端页面
 app.get('/', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'JavaScript 交互式学习平台 API',
-    version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      study: '/api/study',
-      health: '/health'
-    }
-  });
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 // 404 处理
