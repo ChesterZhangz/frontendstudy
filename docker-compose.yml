@@ -1,0 +1,43 @@
+services:
+  study-app:
+    build: .
+    container_name: study-app
+    ports:
+      - "5200:5200"
+    environment:
+      - NODE_ENV=production
+      - PORT=5200
+      - FRONTEND_URL=https://study.mareate.com
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+      - ./temp:/app/temp
+    restart: unless-stopped
+    networks:
+      - study-network
+    # 确保日志输出到主机
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:alpine
+    container_name: study-nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./frontend/public:/usr/share/nginx/html
+    depends_on:
+      - study-app
+    restart: unless-stopped
+    networks:
+      - study-network
+
+networks:
+  study-network:
+    driver: bridge

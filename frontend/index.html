@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JavaScript交互式学习平台 - 让编程学习更简单" />
+    <meta name="keywords" content="JavaScript,学习,编程,教程,前端,开发" />
+    <meta name="author" content="Viquard Team" />
+    
+    <!-- Theme -->
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <title>JavaScript学习平台 - 交互式编程学习体验</title>
+    
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      html {
+        visibility: hidden;
+      }
+      html.loaded {
+        visibility: visible;
+      }
+      
+      /* Loading animation */
+      .initial-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
+      }
+      
+      .initial-loading.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          color-scheme: dark;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Initial loading screen -->
+    <div id="initial-loading" class="initial-loading">
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <div id="root"></div>
+    
+    <script>
+      // Remove loading screen when DOM is ready
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadingElement = document.getElementById('initial-loading');
+        if (loadingElement) {
+          setTimeout(() => {
+            loadingElement.classList.add('hide');
+            setTimeout(() => {
+              loadingElement.remove();
+            }, 300);
+          }, 500);
+        }
+        
+        // Show content
+        document.documentElement.classList.add('loaded');
+      });
+      
+      // Handle theme preference
+      (function() {
+        const theme = localStorage.getItem('theme-storage');
+        if (theme) {
+          try {
+            const { state } = JSON.parse(theme);
+            if (state.theme === 'dark' || 
+                (state.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.classList.add('dark');
+            }
+          } catch (e) {
+            // Ignore parsing errors
+          }
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

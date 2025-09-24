@@ -1,0 +1,308 @@
+/* 交互式组件样式 */
+
+/* 工具栏按钮样式 */
+.toolbar-button {
+  @apply p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition-colors;
+}
+
+.toolbar-button:hover {
+  @apply shadow-sm;
+}
+
+.toolbar-button:active {
+  @apply scale-95;
+}
+
+/* 交互式渲染器样式 */
+.interactive-renderer {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.interactive-renderer h1,
+.interactive-renderer h2,
+.interactive-renderer h3,
+.interactive-renderer h4,
+.interactive-renderer h5,
+.interactive-renderer h6 {
+  @apply font-semibold text-gray-900 dark:text-white;
+}
+
+.interactive-renderer p {
+  @apply mb-4 text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.interactive-renderer ul,
+.interactive-renderer ol {
+  @apply mb-4 ml-6;
+}
+
+.interactive-renderer li {
+  @apply mb-2 text-gray-700 dark:text-gray-300;
+}
+
+.interactive-renderer blockquote {
+  @apply border-l-4 border-blue-400 pl-4 py-2 my-4 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 italic;
+}
+
+.interactive-renderer code {
+  @apply px-1 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded text-sm font-mono;
+}
+
+.interactive-renderer pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto my-4;
+}
+
+.interactive-renderer a {
+  @apply text-blue-600 dark:text-blue-400 hover:underline;
+}
+
+.interactive-renderer img {
+  @apply max-w-full h-auto rounded-lg my-4 shadow-md;
+}
+
+.interactive-renderer table {
+  @apply w-full border-collapse border border-gray-200 dark:border-gray-700 my-4;
+}
+
+.interactive-renderer th,
+.interactive-renderer td {
+  @apply px-3 py-2 border border-gray-200 dark:border-gray-700 text-left;
+}
+
+.interactive-renderer th {
+  @apply bg-gray-50 dark:bg-gray-700 font-semibold text-gray-900 dark:text-white;
+}
+
+.interactive-renderer td {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+/* 代码高亮样式 */
+.code-highlight {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto my-4 relative;
+}
+
+.code-highlight::before {
+  content: attr(data-language);
+  @apply absolute top-2 right-2 text-xs text-gray-400 uppercase;
+}
+
+/* 拖拽样式 */
+.drag-item {
+  @apply cursor-move transition-all duration-200;
+}
+
+.drag-item:hover {
+  @apply shadow-md transform scale-105;
+}
+
+.drag-item.dragging {
+  @apply opacity-50 transform rotate-2;
+}
+
+.drop-zone {
+  @apply border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 min-h-[80px] transition-all duration-200;
+}
+
+.drop-zone.drag-over {
+  @apply border-blue-500 bg-blue-50 dark:bg-blue-900/20;
+}
+
+.drop-zone.has-items {
+  @apply border-solid border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50;
+}
+
+/* 动画效果 */
+@keyframes pulse-success {
+  0%, 100% {
+    @apply bg-green-100 dark:bg-green-900/20;
+  }
+  50% {
+    @apply bg-green-200 dark:bg-green-900/40;
+  }
+}
+
+@keyframes pulse-error {
+  0%, 100% {
+    @apply bg-red-100 dark:bg-red-900/20;
+  }
+  50% {
+    @apply bg-red-200 dark:bg-red-900/40;
+  }
+}
+
+.success-pulse {
+  animation: pulse-success 0.6s ease-in-out;
+}
+
+.error-pulse {
+  animation: pulse-error 0.6s ease-in-out;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  @apply w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-blue-500 to-green-500 transition-all duration-500 ease-out;
+}
+
+/* 徽章样式 */
+.badge {
+  @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.badge-success {
+  @apply bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300;
+}
+
+.badge-error {
+  @apply bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300;
+}
+
+.badge-info {
+  @apply bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300;
+}
+
+/* 卡片样式 */
+.interactive-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+.interactive-card-header {
+  @apply px-6 py-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600;
+}
+
+.interactive-card-body {
+  @apply p-6;
+}
+
+.interactive-card-footer {
+  @apply px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600;
+}
+
+/* 按钮样式 */
+.btn {
+  @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500;
+}
+
+.btn-secondary {
+  @apply text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-blue-500;
+}
+
+.btn-success {
+  @apply text-white bg-green-600 hover:bg-green-700 focus:ring-green-500;
+}
+
+.btn-warning {
+  @apply text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500;
+}
+
+.btn-danger {
+  @apply text-white bg-red-600 hover:bg-red-700 focus:ring-red-500;
+}
+
+.btn-sm {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.btn-lg {
+  @apply px-6 py-3 text-base;
+}
+
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* 输入框样式 */
+.input {
+  @apply block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200;
+}
+
+.input-error {
+  @apply border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500;
+}
+
+.input-success {
+  @apply border-green-300 dark:border-green-600 focus:ring-green-500 focus:border-green-500;
+}
+
+/* 标签页样式 */
+.tab-list {
+  @apply flex space-x-1 border-b border-gray-200 dark:border-gray-700;
+}
+
+.tab-button {
+  @apply px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent transition-colors duration-200;
+}
+
+.tab-button.active {
+  @apply text-blue-600 dark:text-blue-400 border-blue-500;
+}
+
+/* 提示框样式 */
+.tooltip {
+  @apply absolute z-10 px-2 py-1 text-xs text-white bg-gray-900 dark:bg-gray-700 rounded shadow-lg pointer-events-none;
+}
+
+.tooltip::before {
+  content: '';
+  @apply absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700;
+}
+
+/* 加载动画 */
+.loading-spinner {
+  @apply inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .interactive-card {
+    @apply mx-2;
+  }
+  
+  .interactive-card-body {
+    @apply p-4;
+  }
+  
+  .toolbar-button {
+    @apply p-2;
+  }
+  
+  .btn {
+    @apply px-3 py-1.5 text-sm;
+  }
+}
+
+/* 深色模式优化 */
+@media (prefers-color-scheme: dark) {
+  .interactive-renderer {
+    color-scheme: dark;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .toolbar-button,
+  .btn,
+  .interactive-card-footer {
+    @apply hidden;
+  }
+  
+  .interactive-card {
+    @apply shadow-none border border-gray-300;
+  }
+  
+  .interactive-renderer {
+    @apply text-black;
+  }
+}
